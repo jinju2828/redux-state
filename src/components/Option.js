@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { setDiff } from '../actions';
+import { connect } from 'react-redux';
 
 class Option extends Component {
     constructor(props) {
@@ -9,15 +10,27 @@ class Option extends Component {
     }
 
     onChange(event){
-        this.props.store.dispatch(setDiff(parseInt(event.target.value)));
+        this.props.onUpdateDiff(parseInt(event.target.value));
     }
     render(){
         return(
             <div>
-                <input value={this.props.store.getState().counter.diff} onChange={this.onChange} />
+                <input value={this.props.diff} onChange={this.onChange} />
             </div>
         );
     }
 }
+function mapStateToProps(state){
+    return{
+        diff:state.counter.diff
+    }
+}
 
+function mapDispatchToProps(dispatch){
+    return{
+        onUpdateDiff: (value) => dispatch(setDiff(value))
+    }
+}
+
+Option = connect(mapStateToProps, mapDispatchToProps)(Option);
 export default Option;
